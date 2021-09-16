@@ -40,8 +40,7 @@ ocupado[0] = 1;
 snake[x] = 0;
 x += 1;
 strip.show();
-probar();
-}
+probar();}
 void loop() {}
 void probar(){
 llenar();
@@ -50,47 +49,29 @@ int u = 0;
 while(true){
   xPosition = analogRead(vrx);
   yPosition = analogRead(vry);
-  if(xPosition > 1000){
-      avanzar(8);
-  }
-  else if(yPosition > 1000){
-    avanzar(-1);
-  }
-  else if(xPosition < 50){
-    avanzar(-8);
-  }
-  else if(yPosition < 50){
-    avanzar(1);
-  }
+  if(xPosition > 1000){avanzar(8);}
+  else if(yPosition > 1000){avanzar(-1);}
+  else if(xPosition < 50){avanzar(-8);}
+  else if(yPosition < 50){avanzar(1);}
   if(agarrar){
-    for(f=0;f<x;f++){
-      almacenar = snake[f];
-    }
+    for(f=0;f<x;f++){almacenar = snake[f];}
     search(grafo,almacenar, almacenar-pos);
-    if(perder){perder=0;if(pos==1){pos=8;}else{pos=1;}}
+    while(perder){perder=0;if(pos==1){pos=8;}else if(pos==8){pos=-1;}
+    else if(pos==-1){pos=-8;}else{pos=-1;}
+    search(grafo,almacenar, almacenar-pos);}
     strip.setPixelColor(almacenar-pos, 0, 0, 255);
      snake[x] = almacenar-pos;
      x += 1;
-     Serial.println("ESTOY EN AGARRAR");
-     Serial.println(almacenar-pos);
-     Serial.println(x);
-    atrapar = random(0,63);
-    Serial.println(atrapar);
-    while(ocupado[atrapar] == 1){atrapar = random(0,63);}
+    atrapar = random(1,63);
+    while(ocupado[atrapar] == 1){atrapar = random(1,63);}
     ocupado[atrapar] = 2;
    strip.setPixelColor(atrapar, 0, 255, 0);
    strip.show();
-   agarrar = false;
-  }
+   agarrar = false;}
   strip.show();
-  delay(100);
-}
-Serial.println("TERMINADO");
-}
+  delay(100);}}
 void avanzar(int n){
     pos = n;
-    Serial.println(snake[0]);
-    Serial.println(snake[0]+n);
     search(grafo, snake[0], snake[0]+n);
     if(perder == 1){lose();}
     strip.setPixelColor(snake[0]+n, 0, 0, 255);
@@ -106,16 +87,11 @@ void avanzar(int n){
        strip.setPixelColor(pasar2, 0, 0, 0);
        ocupado[pasar2] = 0;
        pasar = pasar2;
-       delay(10);
-    }
-    strip.show();
-}
+       delay(10);}strip.show();}
 void lose(){
   for(int y=0;y<64;y++){
     strip.setPixelColor(y, 255, 0, 0);
-    delay(1);
-  }
+    delay(1);}
   strip.show();
   delay(3000);
-  resetFunc();
-}
+  resetFunc();}
